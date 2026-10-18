@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speak AI - Daniel Voice Assistant</title>
+    <style>
+        :root {
+            --bg-main: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-dark: #0f172a;
+            --text-dim: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 1050px;
+            background: var(--card-bg);
+            border-radius: 28px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--border-color);
+            padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            overflow: hidden;
+        }
+
+        .hero-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: var(--text-dim);
+            font-weight: 500;
+        }
+
+        .hero-headline {
+            font-size: 42px;
+            font-weight: 800;
+            line-height: 1.15;
+            color: var(--text-dark);
+            letter-spacing: -0.8px;
+        }
+
+        .hero-subtext {
+            font-size: 15px;
+            color: var(--text-dim);
+            line-height: 1.5;
+            max-width: 420px;
+        }
+
+        .hero-right {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            height: 280px;
+        }
+
+        .pill-wrapper {
+            position: relative;
+            width: 200px;
+            height: 120px;
+            border-radius: 80px;
+            background: linear-gradient(135deg, #a855f7, #ec4899, #38bdf8);
+            padding: 3px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.12);
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .pill-inner {
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            border-radius: 76px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .wave-bars {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            height: 28px;
+        }
+
+        .wave-bar {
+            width: 3.5px;
+            background: #0f172a;
+            border-radius: 10px;
+            animation: idlePulse 1.4s ease-in-out infinite alternate;
+        }
+
+        .wave-bar:nth-child(1) { height: 10px; animation-delay: 0.1s; }
+        .wave-bar:nth-child(2) { height: 22px; animation-delay: 0.3s; }
+        .wave-bar:nth-child(3) { height: 28px; animation-delay: 0.2s; }
+        .wave-bar:nth-child(4) { height: 18px; animation-delay: 0.4s; }
+        .wave-bar:nth-child(5) { height: 10px; animation-delay: 0.5s; }
+
+        @keyframes idlePulse {
+            0% { transform: scaleY(0.7); }
+            100% { transform: scaleY(1.2); }
+        }
+
+        .thinking-sphere {
+            position: absolute;
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, 
+                #ffffff 0%, 
+                #fbcfe8 25%, 
+                #f472b6 50%, 
+                #38bdf8 75%, 
+                #0284c7 100%);
+            box-shadow: 
+                inset 0 0 20px rgba(255, 255, 255, 0.9),
+                inset -10px -10px 25px rgba(2, 132, 199, 0.3),
+                0 0 45px rgba(244, 114, 182, 0.45),
+                0 0 70px rgba(56, 189, 248, 0.35);
+            animation: 
+                pinkBlueMorph 5s ease-in-out infinite alternate,
+                pinkBlueFloat 3.5s ease-in-out infinite;
+            filter: contrast(1.05);
+            display: none;
+        }
+
+        @keyframes pinkBlueMorph {
+            0% { border-radius: 48% 52% 65% 35% / 40% 60% 40% 60%; transform: rotate(0deg) scale(0.96); }
+            50% { border-radius: 60% 40% 40% 60% / 55% 45% 55% 45%; transform: rotate(180deg) scale(1.04); }
+            100% { border-radius: 40% 60% 55% 45% / 45% 55% 45% 55%; transform: rotate(360deg) scale(0.98); }
+        }
+
+        @keyframes pinkBlueFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .milk-panel {
+            position: absolute;
+            width: 320px;
+            height: 160px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.03),
+                inset 0 0 15px rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            display: none;
+        }
+
+        #milkCanvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .control-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+            padding: 14px 24px;
+            border-radius: 18px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .status-msg {
+            font-size: 14px;
+            color: var(--text-dim);
+            font-weight: 500;
+        }
+
+        .mic-btn {
+            background: #0f172a;
+            color: #ffffff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .mic-btn:hover {
+            background: #1e293b;
+        }
+
+        .mic-btn.recording {
+            background: #ef4444;
+            animation: pulseMic 1.2s infinite;
+        }
+
+        @keyframes pulseMic {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+
+    <div class="hero-section">
+        <div class="hero-left">
+            <div class="badge-pill">
+                ✏️ Speak and ask everything you can imagine
+            </div>
+            <h1 class="hero-headline">We’ve typed for 150 years. It’s time to speak</h1>
+            <p class="hero-subtext">
+                Speak ai turns your voice into clear text in real time.
+            </p>
+        </div>
+
+        <div class="hero-right">
+            <!-- 1. Idle State -->
+            <div class="pill-wrapper" id="idlePill" onclick="toggleListening()">
+                <div class="pill-inner">
+                    <div class="wave-bars">
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Thinking State -->
+            <div class="thinking-sphere" id="thinkingSphere"></div>
+
+            <!-- 3. Replying State -->
+            <div class="milk-panel" id="milkPanel">
+                <canvas id="milkCanvas" width="640" height="320"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="control-bar">
+        <div class="status-msg" id="statusText">Tap to speak with Daniel</div>
+        <button class="mic-btn" id="micBtn" onclick="toggleListening()">
+            <span>🎤</span> Speak Now
+        </button>
+    </div>
+
+</div>
+
+<script>
+    const micBtn = document.getElementById('micBtn');
+    const statusText = document.getElementById('statusText');
+    
+    const idlePill = document.getElementById('idlePill');
+    const thinkingSphere = document.getElementById('thinkingSphere');
+    const milkPanel = document.getElementById('milkPanel');
+    const milkCanvas = document.getElementById('milkCanvas');
+    const ctx = milkCanvas.getContext('2d');
+
+    let isListening = false;
+    let selectedVoice = null;
+    let animationId = null;
+    let step = 0;
+
+
+    function renderMilkWaves() {
+        ctx.clearRect(0, 0, milkCanvas.width, milkCanvas.height);
+        step += 0.025;
+
+        const width = milkCanvas.width;
+        const height = milkCanvas.height;
+        const centerY = height / 2 + 10;
+
+        const ribbons = [
+            { stroke: 'rgba(56, 189, 248, 0.75)', shadow: 'rgba(56, 189, 248, 0.5)', amp1: 35, amp2: 25, freq1: 0.015, freq2: 0.025, speed: 1.0 },
+            { stroke: 'rgba(192, 132, 252, 0.70)', shadow: 'rgba(192, 132, 252, 0.5)', amp1: 45, amp2: 20, freq1: 0.012, freq2: 0.020, speed: -0.8 },
+            { stroke: 'rgba(125, 211, 252, 0.85)', shadow: 'rgba(125, 211, 252, 0.6)', amp1: 25, amp2: 30, freq1: 0.018, freq2: 0.030, speed: 1.2 },
+            { stroke: 'rgba(244, 114, 182, 0.65)', shadow: 'rgba(244, 114, 182, 0.4)', amp1: 30, amp2: 15, freq1: 0.010, freq2: 0.022, speed: -1.1 }
+        ];
+
+        // Enable additive blending for glowing, translucent light overlaps
+        ctx.globalCompositeOperation = 'lighter';
+
+        ribbons.forEach((r) => {
+            ctx.beginPath();
+            ctx.lineWidth = 2.8;
+            ctx.strokeStyle = r.stroke;
+            ctx.shadowColor = r.shadow;
+            ctx.shadowBlur = 10;
+
+            for (let x = 0; x < width; x += 2) {
+                
+                const envelope = Math.sin((x / width) * Math.PI);
+                
+                const wave1 = Math.sin(x * r.freq1 + step * r.speed) * r.amp1;
+                const wave2 = Math.cos(x * r.freq2 - step * r.speed * 0.7) * r.amp2;
+                const y = centerY + (wave1 + wave2) * envelope;
+
+                if (x === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            ctx.stroke();
+        });
+
+        ctx.globalCompositeOperation = 'source-over';
+        animationId = requestAnimationFrame(renderMilkWaves);
+    }
+
+    function startMilkAnimation() {
+        if (!animationId) {
+            step = 0;
+            renderMilkWaves();
+        }
+    }
+
+    function stopMilkAnimation() {
+        if (animationId) {
+            cancelAnimationFrame(animationId);
+            animationId = null;
+        }
+    }
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition = null;
+
+    if (SpeechRecognition) {
+        recognition = new SpeechRecognition();
+        recognition.lang = 'en-GB';
+        recognition.interimResults = false;
+
+        recognition.onstart = () => {
+            isListening = true;
+            micBtn.classList.add('recording');
+            micBtn.innerHTML = '<span>🔴</span> Listening...';
+            statusText.innerText = 'Listening to your voice...';
+            showIdleState();
+        };
+
+        recognition.onend = () => {
+            isListening = false;
+            micBtn.classList.remove('recording');
+            micBtn.innerHTML = '<span>🎤</span> Speak Now';
+            if (statusText.innerText === 'Listening to your voice...') {
+                statusText.innerText = 'Tap to speak with Daniel';
+            }
+        };
+
+        recognition.onresult = async (event) => {
+            const transcript = event.results[0][0].transcript;
+            showThinkingState();
+            statusText.innerText = 'Daniel is thinking...';
+            await sendToAssistant(transcript);
+        };
+
+        recognition.onerror = () => {
+            statusText.innerText = 'Speech error. Try again.';
+            showIdleState();
+        };
+    } else {
+        statusText.innerText = 'Speech recognition not supported in this browser.';
+    }
+
+    function showIdleState() {
+        stopMilkAnimation();
+        idlePill.style.display = 'flex';
+        thinkingSphere.style.display = 'none';
+        milkPanel.style.display = 'none';
+    }
+
+    function showThinkingState() {
+        stopMilkAnimation();
+        idlePill.style.display = 'none';
+        thinkingSphere.style.display = 'block';
+        milkPanel.style.display = 'none';
+    }
+
+    function showReplyingState() {
+        idlePill.style.display = 'none';
+        thinkingSphere.style.display = 'none';
+        milkPanel.style.display = 'flex';
+        startMilkAnimation();
+    }
+
+    function initVoices() {
+        const voices = window.speechSynthesis.getVoices();
+        selectedVoice = voices.find(v => v.name.includes("Daniel") || v.lang === "en-GB") || voices[0];
+    }
+    window.speechSynthesis.onvoiceschanged = initVoices;
+    initVoices();
+
+    function toggleListening() {
+        if (!recognition) return;
+        if (isListening) {
+            recognition.stop();
+        } else {
+            recognition.start();
+        }
+    }
+
+    async function sendToAssistant(message) {
+        try {
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: message })
+            });
+
+            if (!response.ok) throw new Error('API Error');
+
+            const data = await response.json();
+            statusText.innerText = 'Tap to speak with Daniel';
+            
+            showReplyingState();
+            speak(data.reply);
+        } catch (err) {
+            statusText.innerText = 'Failed to connect to assistant.';
+            showIdleState();
+        }
+    }
+
+    function speak(text) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        if (selectedVoice) utterance.voice = selectedVoice;
+        utterance.rate = 1.0;
+
+        utterance.onend = () => {
+            showIdleState();
+        };
+
+        window.speechSynthesis.speak(utterance);
+    }
+
+    showIdleState();
+</script>
+
+</body>
+</html>
