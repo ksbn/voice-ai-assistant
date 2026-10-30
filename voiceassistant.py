@@ -4,33 +4,38 @@ import ollama
 
 recognizer = sr.Recognizer()
 
-def say(text):
+def say(text: str):
     print(f"Assistant: {text}")
     try:
-       
         speaker = pyttsx3.init()
-        
-        voices = speaker.getProperty('voices')
-        for voice in voices:
-            if "дэниэл" in voice.name.lower() or "daniel" in voice.name.lower():
-                speaker.setProperty('voice', voice.id)
-                break
-                
+
+        try:
+            voices = speaker.getProperty('voices')
+            if voices:
+                for voice in voices:
+                    if voice.name and ("дэниэл" in voice.name.lower() or "daniel" in voice.name.lower()):
+                        speaker.setProperty('voice', voice.id) 
+                        break
+        except Exception:
+            pass
+
         speaker.setProperty('rate', 160)
         speaker.setProperty('volume', 1.0)
         
         speaker.say(text)
         speaker.runAndWait()
         
-        del speaker
     except Exception as e:
         print(f"TTS Error: {e}")
 
-def listen():
+def listen() -> str:
     with sr.Microphone() as source:
         print("\nListening...")
         recognizer.adjust_for_ambient_noise(source, duration=0.5)
-        audio = recognizer.listen(source)
+        try:
+            audio = recognizer.listen(source, timeout=5, phrase_time_limit=10)
+        except Exception as e:
+            return ""
     
     try:
         text = recognizer.recognize_google(audio, language="en-GB")
@@ -42,7 +47,7 @@ def listen():
         print("No connection with service")
         return ""
 
-chat_history = [
+chat_history : list[dict[str, str]] = [
     {
         'role': 'system', 
         'content': 'You are Daniel, a friendly, concise AI voice assistant. Keep answers short (1-2 sentences).'
@@ -68,7 +73,7 @@ while True:
             model='llama3.2', 
             messages=chat_history
         )
-        ai_reply = response['message']['content']
+        ai_reply = response.message.content if hasattr(response, 'message') else str(response)
         
         chat_history.append({'role': 'assistant', 'content': ai_reply})
         say(ai_reply)
