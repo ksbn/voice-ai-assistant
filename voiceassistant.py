@@ -12,7 +12,7 @@ def say(text: str):
         try:
             voices = speaker.getProperty('voices')
             if voices:
-                for voice in voices:
+                for voice in voices: # type: ignore
                     if voice.name and ("дэниэл" in voice.name.lower() or "daniel" in voice.name.lower()):
                         speaker.setProperty('voice', voice.id) 
                         break
@@ -38,7 +38,7 @@ def listen() -> str:
             return ""
     
     try:
-        text = recognizer.recognize_google(audio, language="en-GB")
+        text = recognizer.recognize_google(audio, language="en-GB") # type: ignore
         print(f"You said: {text}")
         return text.lower()
     except sr.UnknownValueError:
@@ -74,10 +74,12 @@ while True:
             messages=chat_history
         )
         ai_reply = response.message.content if hasattr(response, 'message') else str(response)
-        
+        if ai_reply is None:
+            ai_reply = ""
+
         chat_history.append({'role': 'assistant', 'content': ai_reply})
         say(ai_reply)
-        
+
     except Exception as e:
         print(f"Error communicating with Ollama: {e}")
         say("Sorry, I had trouble thinking of a response.")

@@ -14,13 +14,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
+api_key = os.environ.get("GROQ_API_KEY")
+client = Groq(api_key=api_key) if api_key else None
 
 class ChatRequest(BaseModel):
     prompt: str
 
 @app.post("/chat")
 def chat_with_ai(request: ChatRequest):
+    if not client:
+        return {"error": "GROQ_API_KEY environment variable is missing on Vercel dashboard."}
     try:
         completion = client.chat.completions.create(
             model="openai/gpt-oss-20b",
