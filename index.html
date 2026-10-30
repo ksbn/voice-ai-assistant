@@ -190,7 +190,6 @@
             box-shadow: 
                 0 20px 40px rgba(0, 0, 0, 0.03),
                 inset 0 0 15px rgba(255, 255, 255, 0.9);
-            display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
@@ -260,7 +259,7 @@
             </div>
             <h1 class="hero-headline">We’ve typed for 150 years. It’s time to speak</h1>
             <p class="hero-subtext">
-                Speak ai turns your voice into clear text in real time.
+                Speak AI turns your voice into clear text and audio responses in real time.
             </p>
         </div>
 
@@ -312,7 +311,6 @@
     let animationId = null;
     let step = 0;
 
-
     function renderMilkWaves() {
         ctx.clearRect(0, 0, milkCanvas.width, milkCanvas.height);
         step += 0.025;
@@ -328,7 +326,6 @@
             { stroke: 'rgba(244, 114, 182, 0.65)', shadow: 'rgba(244, 114, 182, 0.4)', amp1: 30, amp2: 15, freq1: 0.010, freq2: 0.022, speed: -1.1 }
         ];
 
-        // Enable additive blending for glowing, translucent light overlaps
         ctx.globalCompositeOperation = 'lighter';
 
         ribbons.forEach((r) => {
@@ -339,9 +336,7 @@
             ctx.shadowBlur = 10;
 
             for (let x = 0; x < width; x += 2) {
-                
                 const envelope = Math.sin((x / width) * Math.PI);
-                
                 const wave1 = Math.sin(x * r.freq1 + step * r.speed) * r.amp1;
                 const wave2 = Math.cos(x * r.freq2 - step * r.speed * 0.7) * r.amp2;
                 const y = centerY + (wave1 + wave2) * envelope;
@@ -406,11 +401,11 @@
         };
 
         recognition.onerror = () => {
-            statusText.innerText = 'Speech error. Try again.';
+            statusText.innerText = 'Speech recognition error. Try again.';
             showIdleState();
         };
     } else {
-        statusText.innerText = 'Speech recognition not supported in this browser.';
+        statusText.innerText = 'Speech recognition is not supported in this browser.';
     }
 
     function showIdleState() {
