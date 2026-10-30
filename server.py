@@ -1,6 +1,7 @@
 import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 from groq import Groq
 
@@ -27,9 +28,13 @@ chat_history = [
 class ChatRequest(BaseModel):
     message: str
 
-@app.get("/")
+@app.get("/", response_class=HTMLResponse)
 def read_root():
-    return {"status": "Daniel AI backend is online and ready!", "endpoint": "/api/chat (POST)"}
+    try:
+        with open("index.html", "r", encoding="utf-8") as f:
+            return HTMLResponse(content=f.read())
+    except Exception as e:
+        return HTMLResponse(content=f"<h3>Error loading UI: {str(e)}</h3>", status_code=404)
 
 @app.post("/api/chat")
 def chat_with_ai(request: ChatRequest):
