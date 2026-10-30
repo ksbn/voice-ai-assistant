@@ -20,6 +20,10 @@ client = Groq(api_key=api_key) if api_key else None
 class ChatRequest(BaseModel):
     prompt: str
 
+@app.get("/")
+def read_root():
+    return {"status": "Daniel AI backend is online and ready!", "endpoint": "/chat (POST)"}
+
 @app.post("/chat")
 def chat_with_ai(request: ChatRequest):
     if not client:
