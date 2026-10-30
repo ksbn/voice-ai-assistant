@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daniel AI — Clean Light Voice Interface</title>
+    <title>Daniel AI — Pro Voice Interface</title>
     <style>
         :root {
-            --bg-light: #f0f7ff;
-            --card-bg: rgba(255, 255, 255, 0.85);
-            --card-border: rgba(14, 165, 233, 0.15);
-            --text-dark: #0f172a;
-            --text-muted: #64748b;
-            --accent-blue: #0284c7;
-            --accent-cyan: #38bdf8;
-            --accent-indigo: #6366f1;
+            --bg-deep: #050814;
+            --card-bg: rgba(13, 19, 38, 0.75);
+            --card-border: rgba(56, 189, 248, 0.12);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-deep-blue: #0284c7;
+            --accent-glow: rgba(56, 189, 248, 0.25);
         }
 
         * {
@@ -24,8 +24,11 @@
         }
 
         body {
-            background: linear-gradient(135deg, #f0f7ff 0%, #e0f2fe 50%, #bae6fd 100%);
-            color: var(--text-dark);
+            background-color: var(--bg-deep);
+            background-image: 
+                radial-gradient(circle at 15% 20%, rgba(2, 132, 199, 0.18) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(37, 99, 235, 0.15) 0%, transparent 40%);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -34,56 +37,18 @@
             position: relative;
         }
 
-        .light-glow {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: -1;
-            filter: blur(60px);
-            opacity: 0.7;
-        }
-
-        .glow-circle {
-            position: absolute;
-            border-radius: 50%;
-            animation: floatGlow 18s infinite alternate ease-in-out;
-        }
-
-        .glow-1 {
-            width: 400px;
-            height: 400px;
-            background: rgba(186, 230, 253, 0.8);
-            top: -10%;
-            left: -10%;
-        }
-
-        .glow-2 {
-            width: 450px;
-            height: 450px;
-            background: rgba(224, 231, 255, 0.7);
-            bottom: -15%;
-            right: -10%;
-            animation-delay: -4s;
-        }
-
-        @keyframes floatGlow {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(30px, 30px) scale(1.08); }
-            100% { transform: translate(-30px, -40px) scale(0.95); }
-        }
-
         .app-container {
             width: 100%;
             max-width: 960px;
             background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 32px;
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-radius: 36px;
             border: 1px solid var(--card-border);
             box-shadow: 
-                0 25px 50px -12px rgba(14, 165, 233, 0.15),
-                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+                0 30px 60px rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08),
+                0 0 50px var(--accent-glow);
             padding: 50px;
             display: flex;
             flex-direction: column;
@@ -94,7 +59,7 @@
 
         .hero-section {
             display: grid;
-            grid-template-columns: 1.2fr 1fr;
+            grid-template-columns: 1.1fr 1fr;
             gap: 40px;
             align-items: center;
         }
@@ -110,8 +75,8 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: #e0f2fe;
-            border: 1px solid rgba(14, 165, 233, 0.2);
+            background: rgba(56, 189, 248, 0.08);
+            border: 1px solid rgba(56, 189, 248, 0.2);
             padding: 6px 16px;
             border-radius: 20px;
             font-size: 13px;
@@ -123,7 +88,7 @@
             font-size: 40px;
             font-weight: 800;
             line-height: 1.15;
-            color: var(--text-dark);
+            color: #ffffff;
             letter-spacing: -0.5px;
         }
 
@@ -141,40 +106,38 @@
             height: 260px;
         }
 
-        .pill-wrapper {
-            position: relative;
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #38bdf8, #6366f1);
-            padding: 3px;
+        .mockup-display {
+            width: 220px;
+            height: 220px;
+            background: linear-gradient(145deg, rgba(20, 30, 60, 0.9), rgba(8, 12, 24, 0.95));
+            border-radius: 40px;
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                0 0 30px rgba(2, 132, 199, 0.2);
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.25);
             cursor: pointer;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
         }
 
-        .pill-wrapper:hover {
-            transform: scale(1.06);
-        }
-
-        .pill-inner {
-            width: 100%;
-            height: 100%;
-            background: #ffffff;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .mockup-display:hover {
+            transform: translateY(-4px) scale(1.03);
+            border-color: rgba(56, 189, 248, 0.5);
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.7),
+                0 0 40px rgba(56, 189, 248, 0.35);
         }
 
         .wave-bars {
             display: flex;
             align-items: center;
-            gap: 5px;
-            height: 32px;
+            gap: 6px;
+            height: 36px;
         }
 
         .wave-bar {
@@ -182,58 +145,29 @@
             background: var(--accent-blue);
             border-radius: 10px;
             animation: idlePulse 1.4s ease-in-out infinite alternate;
+            box-shadow: 0 0 10px var(--accent-blue);
         }
 
         .wave-bar:nth-child(1) { height: 12px; animation-delay: 0.1s; }
-        .wave-bar:nth-child(2) { height: 26px; animation-delay: 0.3s; background: var(--accent-indigo); }
-        .wave-bar:nth-child(3) { height: 34px; animation-delay: 0.2s; background: #0284c7; }
-        .wave-bar:nth-child(4) { height: 22px; animation-delay: 0.4s; background: var(--accent-indigo); }
+        .wave-bar:nth-child(2) { height: 26px; animation-delay: 0.3s; background: #60a5fa; }
+        .wave-bar:nth-child(3) { height: 38px; animation-delay: 0.2s; background: #93c5fd; }
+        .wave-bar:nth-child(4) { height: 22px; animation-delay: 0.4s; background: #60a5fa; }
         .wave-bar:nth-child(5) { height: 12px; animation-delay: 0.5s; }
 
         @keyframes idlePulse {
-            0% { transform: scaleY(0.6); opacity: 0.6; }
+            0% { transform: scaleY(0.5); opacity: 0.5; }
             100% { transform: scaleY(1.3); opacity: 1; }
         }
 
-        .thinking-sphere {
-            position: absolute;
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, 
-                #ffffff 0%, 
-                #bae6fd 40%, 
-                #38bdf8 70%, 
-                #0284c7 100%);
-            box-shadow: 
-                inset 0 0 20px rgba(255, 255, 255, 0.9),
-                0 0 40px rgba(14, 165, 233, 0.35);
-            animation: 
-                quantumMorph 4s ease-in-out infinite alternate,
-                quantumFloat 3s ease-in-out infinite;
-            display: none;
-        }
-
-        @keyframes quantumMorph {
-            0% { border-radius: 40% 60% 60% 40% / 40% 40% 60% 60%; transform: rotate(0deg) scale(0.95); }
-            50% { border-radius: 60% 40% 40% 60% / 50% 60% 40% 50%; transform: rotate(180deg) scale(1.05); }
-            100% { border-radius: 50% 50% 45% 55% / 60% 40% 60% 40%; transform: rotate(360deg) scale(0.98); }
-        }
-
-        @keyframes quantumFloat {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-
-
         .soundbar-panel {
             position: absolute;
-            width: 280px;
+            width: 260px;
             height: 90px;
-            background: #ffffff;
-            border-radius: 20px;
-            border: 1px solid rgba(14, 165, 233, 0.2);
-            box-shadow: 0 15px 35px rgba(14, 165, 233, 0.15);
+            background: rgba(13, 19, 38, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 25px rgba(56, 189, 248, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -243,10 +177,11 @@
         }
 
         .sound-dot {
-            width: 6px;
-            background: linear-gradient(180deg, #0284c7, #38bdf8);
+            width: 5px;
+            background: linear-gradient(180deg, #38bdf8, #1d4ed8);
             border-radius: 10px;
             animation: soundWave 0.8s ease-in-out infinite alternate;
+            box-shadow: 0 0 8px var(--accent-blue);
         }
 
         .sound-dot:nth-child(1) { height: 15px; animation-delay: 0.1s; }
@@ -266,11 +201,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #ffffff;
+            background: rgba(10, 15, 30, 0.6);
             padding: 16px 28px;
             border-radius: 20px;
-            border: 1px solid rgba(14, 165, 233, 0.15);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(56, 189, 248, 0.1);
         }
 
         .status-msg {
@@ -288,7 +222,7 @@
             height: 8px;
             background: var(--accent-blue);
             border-radius: 50%;
-            box-shadow: 0 0 8px var(--accent-blue);
+            box-shadow: 0 0 10px var(--accent-blue);
             animation: blink 2s infinite;
         }
 
@@ -298,8 +232,8 @@
         }
 
         .mic-btn {
-            background: linear-gradient(135deg, #0284c7, #38bdf8);
-            color: #ffffff;
+            background: linear-gradient(135deg, #38bdf8, #0284c7);
+            color: #050814;
             border: none;
             padding: 14px 28px;
             border-radius: 16px;
@@ -310,18 +244,19 @@
             align-items: center;
             gap: 10px;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
         }
 
         .mic-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.45);
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.6);
         }
 
         .mic-btn.recording {
-            background: linear-gradient(135deg, #ef4444, #f43f5e);
+            background: linear-gradient(135deg, #f43f5e, #be123c);
+            color: #ffffff;
             animation: pulseMic 1.2s infinite;
-            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+            box-shadow: 0 0 30px rgba(244, 63, 94, 0.6);
         }
 
         @keyframes pulseMic {
@@ -346,43 +281,30 @@
 </head>
 <body>
 
-    {/* Ambient Light Background */}
-    <div class="light-glow">
-        <div class="glow-circle glow-1"></div>
-        <div class="glow-circle glow-2"></div>
-    </div>
-
 <div class="app-container">
 
     <div class="hero-section">
         <div class="hero-left">
             <div class="badge-pill">
-                ✨ Light & Blue Neural Voice
+                ✦ Pro Neural Voice System
             </div>
-            <h1 class="hero-headline">Clear sound. Pure connection.</h1>
+            <h1 class="hero-headline">Deep interface. Immersive sound.</h1>
             <p class="hero-subtext">
-                Daniel operates on lightning-fast Groq intelligence wrapped inside a clean, bright azure interface.
+                Daniel is engineered with ultra-low latency Groq intelligence inside a sleek, dark-blue frosted glass card environment.
             </p>
         </div>
 
         <div class="hero-right">
-            <!-- 1. Idle State -->
-            <div class="pill-wrapper" id="idlePill" onclick="toggleListening()">
-                <div class="pill-inner">
-                    <div class="wave-bars">
-                        <div class="wave-bar"></div>
-                        <div class="wave-bar"></div>
-                        <div class="wave-bar"></div>
-                        <div class="wave-bar"></div>
-                        <div class="wave-bar"></div>
-                    </div>
+            <div class="mockup-display" id="idleCard" onclick="toggleListening()">
+                <div class="wave-bars">
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
                 </div>
             </div>
 
-            <!-- 2. Thinking State -->
-            <div class="thinking-sphere" id="thinkingSphere"></div>
-
-      
             <div class="soundbar-panel" id="soundbarPanel">
                 <div class="sound-dot"></div>
                 <div class="sound-dot"></div>
@@ -396,7 +318,7 @@
     </div>
 
     <div class="control-bar">
-        <div class="status-msg" id="statusText">System ready. Tap orb to speak with Daniel</div>
+        <div class="status-msg" id="statusText">System ready. Tap card to speak with Daniel</div>
         <button class="mic-btn" id="micBtn" onclick="toggleListening()">
             <span>🎙️</span> Initialize Voice
         </button>
@@ -408,8 +330,7 @@
     const micBtn = document.getElementById('micBtn');
     const statusText = document.getElementById('statusText');
     
-    const idlePill = document.getElementById('idlePill');
-    const thinkingSphere = document.getElementById('thinkingSphere');
+    const idleCard = document.getElementById('idleCard');
     const soundbarPanel = document.getElementById('soundbarPanel');
 
     let isListening = false;
@@ -436,13 +357,12 @@
             micBtn.classList.remove('recording');
             micBtn.innerHTML = '<span>🎙️</span> Initialize Voice';
             if (statusText.innerText === 'Listening to your transmission...') {
-                statusText.innerText = 'System ready. Tap orb to speak with Daniel';
+                statusText.innerText = 'System ready. Tap card to speak with Daniel';
             }
         };
 
         recognition.onresult = async (event) => {
             const transcript = event.results[0][0].transcript;
-            showThinkingState();
             statusText.innerText = 'Daniel is processing query...';
             await sendToAssistant(transcript);
         };
@@ -456,20 +376,12 @@
     }
 
     function showIdleState() {
-        idlePill.style.display = 'flex';
-        thinkingSphere.style.display = 'none';
-        soundbarPanel.style.display = 'none';
-    }
-
-    function showThinkingState() {
-        idlePill.style.display = 'none';
-        thinkingSphere.style.display = 'block';
+        idleCard.style.display = 'flex';
         soundbarPanel.style.display = 'none';
     }
 
     function showReplyingState() {
-        idlePill.style.display = 'none';
-        thinkingSphere.style.display = 'none';
+        idleCard.style.display = 'none';
         soundbarPanel.style.display = 'flex';
     }
 
@@ -517,7 +429,7 @@
         utterance.rate = 1.0;
 
         utterance.onend = () => {
-            statusText.innerText = 'System ready. Tap orb to speak with Daniel';
+            statusText.innerText = 'System ready. Tap card to speak with Daniel';
             showIdleState();
         };
 
